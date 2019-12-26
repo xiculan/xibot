@@ -11,9 +11,9 @@ update='0'
 basic_configurations='0'
 make_links='0'
 install_apache='0'
-install_basic_xibot_software='0'
+install_basic_xibot_software='1'
 change_to_static_ip='0'
-install_motion='1'
+install_motion='0'
 
 #backup most important files --------------------------------------------
 if [ $backup = '1' ]
@@ -61,6 +61,9 @@ if [ $install_basic_xibot_software = '1' ]
 then
 #	sudo apt install samba
 	echo 'hola'
+#	http://mattrichardson.com/Raspberry-Pi-Flask/index.html
+	sudo apt-get install python-pip
+	sudo pip install flask
 
 fi
 
