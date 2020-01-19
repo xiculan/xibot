@@ -1,6 +1,6 @@
 # xibot
 
-xibot
+xibot documentation
 
 This project aims to create a universal enviroment to control a like system robot (software ans hardware)
 
