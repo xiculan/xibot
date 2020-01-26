@@ -14,7 +14,11 @@
 #quan apretem la tecla continuament, perdem el control perque el buffer
 #queda ple i fins que no acaba de escriure no para de incrementar
 #els valors
-
+#******** diario ***********
+#enero 2020
+#por hacer : calcular el fwd i el turn para enviarselo a los servos
+#crear funcion e saber.py que se llame drive, i que envie el fwd i el turn
+#*************************************************
 import sys,os
 import select
 import tty,time
