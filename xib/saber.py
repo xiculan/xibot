@@ -5,41 +5,42 @@ import RPi.GPIO as GPIO
 from time import sleep
 
 #I connected the servo motor to pin 11 (BCM GPIO17) on the Raspberry Pi.
-
-
 fwd_pin=11
 turn_pin=12
 
 #configuracion *************************************
 #set gpio modes
 GPIO.setmode(GPIO.BOARD)
-#GPIO.setup(fwd_pin, GPIO.OUT)
-#GPIO.setup(turn_pin, GPIO.OUT)
+GPIO.setup(fwd_pin, GPIO.OUT)
+GPIO.setup(turn_pin, GPIO.OUT)
 
-#pwm=GPIO.PWM(fwd_pin, 50)
-#pwm=GPIO.PWM(turn_pin, 50)
-#pwm.start(0)
 
+def hola():
+  print('hola')
 
 def saber(turn,fwd):
   print('turn: '+turn+'  fwd: '+fwd)
-#  driver.write(turn)
-#  pwm.ChangeDutyCycle(5) # left -90 deg position
-#  sleep(1)
-#  pwm.ChangeDutyCycle(7.5) # neutral position
-#  sleep(1)
-#  pwm.ChangeDutyCycle(10) # right +90 deg position
-#  sleep(1)
 
-#  pwm.stop()
-#  GPIO.cleanup()
+def change_pwm_value(pin,angle):
+    pwm=GPIO.PWM(pin, 50)
+    pwm.start(0)
 
-def setAngle(angle):
+    print('funcion change_pwm_value - pin: '+str(pin)+'  angle: '+str(angle))
     duty = angle / 18 + 3
-    GPIO.output(pwd_pin, True)
+    GPIO.output(pin, True)
     pwm.ChangeDutyCycle(duty)
     sleep(1)
-    GPIO.output(pwd_pin, False)
+    GPIO.output(pin, False)
+    pwm.ChangeDutyCycle(duty)
+
+
+def setAngle(angle):
+    print('funcion setAngle')
+    duty = angle / 18 + 3
+    GPIO.output(fwd_pin, True)
+    pwm.ChangeDutyCycle(duty)
+    sleep(1)
+    GPIO.output(fwd_pin, False)
     pwm.ChangeDutyCycle(duty)
 
 
@@ -52,7 +53,12 @@ def main():
       if e == 'm':
         print('movemos:')
 #        saber('100','60')
-        setAngle('90')
+#        setAngle(90)
+        change_pwm_value(turn_pin,90)
+        change_pwm_value(fwd_pin,90)
+        time.sleep(3)
+        change_pwm_value(turn_pin,120)
+        change_pwm_value(fwd_pin,120)
 
       if e == 'q':
         print('exiting')

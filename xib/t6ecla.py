@@ -16,12 +16,18 @@
 #els valors
 
 import sys,os
-import select 
+import select
 import tty,time
 import termios
+import saber
 
-
+def calc_fwd(forward):
   
+  return fwd
+
+def calc_turn(left,right):
+  return turn
+
 
 def isData():
   return select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], [])
@@ -71,6 +77,8 @@ try:
         forward=forward+2
 
       elif c == right_key:
+#         saber.hola()
+
         left=0
         right=right+3
         forward=forward+2
@@ -92,7 +100,7 @@ try:
 
     if left > 0:
       left=left-1
-
+#    saber.drive(turn,forward)
     time.sleep(pause)
 
 finally:
