@@ -45,9 +45,9 @@ try:
   left=0
   forward=0
 
-  max_right=50
-  max_left=50
-  max_front=50
+  max_right=100
+  max_left=100
+  max_front=100
 
   #keys definition
   front_key='o'
@@ -61,7 +61,7 @@ try:
 
     print i
     i += 1
-    print (max_front)
+    print ('max values: '+str(max_front))
     print('movement: left->' + str(left) + '  forward->' + str(forward)  + '  right->' + str(right))
 #    print('max_front=' + str(max_front))
     if isData():
@@ -72,39 +72,47 @@ try:
       elif c == front_key:
         if forward < max_front:
           print('accelerating')
-          forward=forward+2
+          forward=forward+10
+          print('forward')
 
       elif c == left_key:
         #print(
         right=0
-        left=left+3
-        forward=forward+2
+        left=left+10
+        forward=forward+5
 
       elif c == right_key:
 #         saber.hola()
 
         left=0
-        right=right+3
-        forward=forward+2
+        right=right+10
+        forward=forward+5
 
-      elif c == stop_key:
+      elif c == stop_key:  #stop_key: l
         print('stop robot')
-        forward=0
-        left=0
+        forward=1
+        left=1
         right=0
+      elif c== 'f':
+        saber.send_fwd(forward)    #movemos
+        saber.send_turn(left,right)
+
       elif c == 'q':
         print('Exiting program')
         break
+
     if forward > 0:
       print('restem move')
-      forward=forward-1
+      forward=forward-5
 
     if right > 0:
-      right=right-1
+      right=right-5
 
     if left > 0:
-      left=left-1
-#    saber.drive(turn,forward)
+      left=left-5
+
+    #altura del while, aqui enviem la senyal pwm
+
     time.sleep(pause)
 
 finally:
