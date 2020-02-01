@@ -1,0 +1,100 @@
+#!/bin/bash
+
+#Install ffmpeg and other motion dependencies:
+apt-get install ffmpeg libmariadb3 libpq5 libmicrohttpd12
+
+#Install motion:
+wget https://github.com/Motion-Project/motion/releases/download/release-4.2.2/pi_buster_motion_4.2.2-1_armhf.deb
+dpkg -i pi_buster_motion_4.2.2-1_armhf.deb
+
+#note: Raspbian Buster comes with motion version 4.1; it is however recommended that you install version 4.2, as indicated above
+#Install the dependencies from the repositories:
+apt-get install python-pip python-dev libssl-dev libcurl4-openssl-dev libjpeg-dev libz-dev
+
+#Install motioneye, which will automatically pull Python dependencies (tornado, jinja2, pillow and pycurl):
+pip install motioneye
+
+#note: If pillow installation fails, you can try installing it from official repos using apt-get install python-pillow.
+#Prepare the configuration directory:
+mkdir -p /etc/motioneye
+cp /usr/local/share/motioneye/extra/motioneye.conf.sample /etc/motioneye/motioneye.conf
+
+#Prepare the media directory:
+mkdir -p /var/lib/motioneye
+
+#Add an init script, configure it to run at startup and start the motionEye server:
+cp /usr/local/share/motioneye/extra/motioneye.systemd-unit-local /etc/systemd/system/motioneye.service
+systemctl daemon-reload
+systemctl enable motioneye
+systemctl start motioneye
+
+#To upgrade to the newest version of motionEye, just issue:
+pip install motioneye --upgrade
+systemctl restart motioneye
+
+#configurar motion*****************************************************************
+#carpeta on es guarden les imatges
+#Motion es una herramienta que nos permite tener como salida archivos jpeg, ppm, e incluso
+# secuencias de vídeo mpeg. Además, Motion nos permite visualizar múltiples
+# webcams a la vez así como live streaming.
+#
+#El sistema operativo que tengo instalado es Raspbian usando PuTTY
+#
+#El primer paso será conectar nuestra webcam a un puerto USB de 
+#la Raspberry, comprobando que la reconoce con el siguiente comando:
+#
+#lsusb
+#
+#como resultado, en mi caso obtengo:
+#
+#Bus 001 Device 002: ID 0424:9512 Standard Microsystems Corp.
+#Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+#Bus 001 Device 003: ID 0424:ec00 Standard Microsystems Corp.
+#Bus 001 Device 004: ID 046d:0804 Logitech, Inc. Webcam C250
+#
+#Vemos que la cámara web es una Logitech C250 con ID 046:0804. 
+#Actualizamos nuestra Raspberry con los siguientes comandos:
+#
+#sudo apt-get update
+#sudo apt-get upgrade
+#Y ya está lista para instalar Motion con el siguiente comando:
+#
+#sudo apt-get install motion
+#que nos llevará un par de minutos. Ahora vamos a modificar 
+#unos cuantos parámetros en el fichero de configuración de Motion con el siguiente comando:
+#
+#sudo nano /etc/motion/motion.conf
+#Imagen_4
+#
+#Ahora, usando los cursores, modifico lo siguiente
+#
+#en el apartado #Daemon# se cambia Daemon OFF por Daemon ON
+#en el apartado #Snapshots# podemos cambiar el tiempo entre cada captura de vídeo, poniendo un valor de 4 segundos entre capturas, snapshot_interval 4
+#en el apartado #Live Webcam Center# ponemos webcam_port 8001 y webcam_localhost OFF
+#en el apartado #HTTP Based Control# cambiamos a control_port 888 y control_localhost OFF
+#
+#Ejecutamos Motion con:
+#
+#sudo motion –n
+#Imagen_6
+#
+#y se empezará a tomar capturas cada 4 segundos a través del puerto 8001. Para ver las imágenes de nuestra webcam solo tenemos que escribir en la barra de dirección del Mozilla u otro navegador decente
+#
+#http://[IP_de_la_Raspberry]:8001 
+#en mi caso sería
+#
+#http://192.168.1.16:8001.
+#Imagen_7
+#
+#Ahora ya podemos acceder a la página de configuración de Motion mediante
+#
+#http://[IP_de_la_Raspberry]:8888 
+
+
+#problemes ***********************************************************
+#As of Raspian Stretch (4.19.27-v7+ #1206) and motion 3.2.12, this also worked:
+#
+#created a new directory (sudo mkdir /tmp/motion)
+#change permissions (sudo chown motion:motion /tmp/motion)
+#change target dir in /etc/motion/motion.conf to point to /tmp/motion (sudo vi /etc/motion/motion.conf)
+#restart motion (sudo service motion restart).

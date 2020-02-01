@@ -1,0 +1,7 @@
+en la carpeta s2ocket hi ha un programa servidor i un client que funcionen.
+
+copiem la carpeta com a s3ocket
+creem un script control.py desde el que podrem engegar i parar el servidor i el client,
+i fer servir les funcions del client per enviar al servidor i veure els mi
+
+
